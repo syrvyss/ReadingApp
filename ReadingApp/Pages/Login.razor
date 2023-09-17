@@ -1,0 +1,63 @@
+@page "/basic_login/"
+@using System.ComponentModel.DataAnnotations
+@using ReadingApp.Models
+@inject Supabase.Client client
+
+@code {
+  private bool ShowPassword { get; set; }
+
+  [Required]
+  private string? Email { get; set; }
+
+  [Required]
+  private string? Password { get; set; }
+
+  [Inject]
+  private Supabase.Client supabase { get; set; }
+
+  private async void OnClickLogin()
+  {
+    var session = await supabase.Auth.SignIn(Email, Password);
+    Console.WriteLine("Yes!!!");
+  }
+
+}
+
+<nav class="navbar nav-underline p-3 bg-primary position-relative">
+  <div class="">
+    <a href="#" class="nav-link mx-auto text-purple-500 text-white fw-bold">My books</a>
+  </div>
+
+  <a href="#" class="nav-link text-white fs-3 fw-bold">Goodshmeads</a>
+
+  <div class="d-flex gap-3">
+    <a href="/basic_login" @bind="Email" class="nav-link active mx-auto text-white fw-bold">Log In</a>
+    <a href="#" class="nav-link mx-auto text-white fw-bold">Create Account</a>
+  </div>
+</nav>
+
+
+<form asp-action="Login" class="container gap-5 mt-3 w-75 mx-auto">
+  <p>Username: @Email</p>
+  <p>Password: @Password</p>
+  <p>Show: @ShowPassword</p>
+
+  <div class="row mx-auto col-12 col-lg-7">
+    <label for="" class="form-label text-white fw-bold">Username *</label>
+    <input required type="text" @bind="Email" class="form-control">
+  </div>
+
+  <div class="row mx-auto col-12 col-lg-7 my-3">
+    <label for="" class="form-label text-white fw-bold">Password *</label>
+    <input required type="password" @bind="Password" class="form-control">
+
+    <div class="mt-1 gap-2 d-flex">
+      <input type="checkbox" name="" id="" @bind="ShowPassword" class="form-check-input border-2 border-white">
+      <label class="form-check-label text-white fw-bold">Show password</label>
+    </div>
+  </div>
+
+  <div class="">
+    <button type="submit" class="btn btn-primary d-block col-lg-3 col-5 mx-auto fw-bold" name="" id="">Log in</button>
+  </div>
+</form>
